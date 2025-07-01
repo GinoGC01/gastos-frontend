@@ -4,8 +4,7 @@ import { useEffect } from 'react'
 import { Link } from "react-router-dom";
 
 export default function FormLogin() {
-    const {login, user} = useAuth()
-    const {isAuthenticated} = useAuth()
+    const {login, user, isAuthenticated} = useAuth()
     const navigate = useNavigate()
 
     useEffect(()=>{

@@ -16,14 +16,17 @@ export default function Profile() {
 
 
 
+
+
     if (!gasto) return <p>Cargando gastos...</p>; // espera a que se cargue
 
 
     return (
-        <>
-        <h1> Hola {user.user.nombre}</h1>
+        <section className='Profile-section'>
+        <div className='Profile-container'>
+        <h1 className='Saludo_Profile'> Hola {user.nombre}</h1>
         {gasto.gastos.length > 0 ? 
-        <div>
+        <div className='Gastos-incluye_Profile'>
             <h2>Gastos que te incluyen </h2>
             <ul>
                 {
@@ -37,9 +40,11 @@ export default function Profile() {
         </div>
          : 
         <div>{gasto.message}</div>}
-        <button onClick={handlerOpenNewGasto}>Crear nuevo gasto</button>
+        <button onClick={handlerOpenNewGasto} className='Gasto-nuevo-button_Profile'>{openCreateGasto ? 'Volver' : 'Crear gasto nuevo'}</button>
         {openCreateGasto && <FormGasto/>}
-        <button onClick={logout}>Cerrar sesion</button>
-        </>
+        <button onClick={logout} className='Gasto-eliminar-button_Profile'>Cerrar sesion</button>
+        </div>
+        
+        </section>
     )
 }

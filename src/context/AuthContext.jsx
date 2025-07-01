@@ -11,26 +11,25 @@ export const AuthProvider = ({ children }) => {
   const [registered, setRegistered] = useState(false)
 
   useEffect(()=>{
-    async function checkLoign (){
-      const cookies = Cookies.get()
-      if(cookies.token){
-        try {
-          const response = await fetch( URL_BACK + 'verifyToken', {credentials:"include"})
-          const data = await response.json()
-          if(data && data.status){
-            setIsAuthenticated(true)
-            setUser(data.user)
-          }
-        } catch (error) {
-          console.error(error)
-          setIsAuthenticated(false)
-          setUser(null)
+    async function checkLoign() {
+      try {
+        const response = await fetch(URL_BACK + 'verifyToken', { credentials: "include" });
+        const data = await response.json();
+
+        if (data && data.status) {
+          setIsAuthenticated(true);
+          setUser(data.user);
+          getUsers()
+        } else {
+          setIsAuthenticated(false);
+          setUser(null);
         }
-      }else {
-      setIsAuthenticated(false);
-      setUser(null);
-    }
-    }
+      } catch (error) {
+        console.error(error);
+        setIsAuthenticated(false);
+        setUser(null);
+      }
+  }
     checkLoign()
   }, [])
 
@@ -73,16 +72,16 @@ const getUsers = async () => {
         credentials:'include',
         body: JSON.stringify(user)
       });
-      const data = await response.json();
+      const data = await response.json()
       if(data && data.status){
         setIsAuthenticated(true)
+        setUser(data.user)
         await getUsers()
       }
-      setUser(data);
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   const register = async (user) => {
     if (!user) return { message: "need a user" };

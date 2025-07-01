@@ -1,0 +1,21 @@
+// src/icons/index.js
+export { Alimentos } from "./Alimentos.jsx";
+export { Transporte } from "./Transporte.jsx";
+export { Salud } from "./Salud.jsx";
+export { Educacion } from "./Educacion.jsx";
+export { Entretenimiento } from "./Entretenimiento.jsx";
+export { Hogar } from "./Hogar.jsx";
+export { Servicios } from "./Servicios.jsx";
+export { Impuestos } from "./Impuestos.jsx";
+export { Ropa } from "./Ropa.jsx";
+export { Mascota } from "./Mascota.jsx";
+export { Tecnologia } from "./Tecnologia.jsx";
+export { Viajes } from "./Viajes.jsx";
+export { Ahorro } from "./Ahorro.jsx";
+export { Inversion } from "./Inversion.jsx";
+export { Deudas } from "./Deudas.jsx";
+export { CuidadoPersonal } from "./CuidadoPersonal.jsx";
+export { Regalo } from "./Regalo.jsx";
+export { Telefono } from "./Telefono.jsx";
+export { Internet } from "./Internet.jsx";
+export { Otros } from "./Otros.jsx";

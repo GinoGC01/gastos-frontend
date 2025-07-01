@@ -1,11 +1,11 @@
-import { useAuth } from "../../hooks/useAuth";
-import { useGasto } from "../../hooks/useGasto";
+import { useAuth } from "../../hooks/useAuth.jsx";
+import { useGasto } from "../../hooks/useGasto.jsx";
 import { useState } from "react";
 
 export default function FormGasto() {
-  const { createGasto, createGastoStatus, handleCreateGastoStatus } = useGasto();
+  const { createGasto, createGastoStatus, handleCreateGastoStatus, categoriasDisponibles } = useGasto();
   const { users, user } = useAuth();
-  const [selectedOptions, setSelectedOptions] = useState([user.user.id]);
+  const [selectedOptions, setSelectedOptions] = useState([user.id]);
 
   const toggleUser = (userId) => {
     setSelectedOptions((prev) =>
@@ -25,7 +25,7 @@ export default function FormGasto() {
       ...fields,
       monto: parseFloat(fields.monto),
       seDivide: selectedOptions, // los IDs de usuarios seleccionados
-      creadoPor: user.user.id
+      creadoPor: user.id
     };
 
     try {
@@ -35,8 +35,6 @@ export default function FormGasto() {
     }
   };
 
-
-
   return (
     <>
       {createGastoStatus ? 
@@ -44,7 +42,7 @@ export default function FormGasto() {
           <p>Gasto creado con éxito</p>
           <button onClick={handleCreateGastoStatus}>Crear otro gasto</button>
         </div> :
-      <form onSubmit={createNewGasto}>
+      <form onSubmit={createNewGasto} className="Form-createGasto">
         <div>
           <label htmlFor="titulo">Título</label>
           <input type="text" name="titulo" id="titulo" required />
@@ -60,11 +58,24 @@ export default function FormGasto() {
           <input type="number" name="monto" id="monto" required />
         </div>  
 
+        <div>
+          <label htmlFor="categoria">Categoria</label>
+          <select name="categoria" id="categoria">
+            {
+            categoriasDisponibles.map(categoria => {
+              return(
+                <option value={categoria.value} key={categoria.value}>{categoria.label}</option>
+              )
+            })
+            }
+          </select>
+        </div>
+
         {users.length > 1 && <div>
           <label>Se divide entre:</label>
           <div>
             {users.map((usuario) => (
-              usuario._id != user.user.id && <label key={usuario._id} style={{ display: 'block' }}>
+              usuario._id != user.id && <label key={usuario._id} style={{ display: 'block' }}>
                 <input
                   type="checkbox"
                   value={usuario._id}
