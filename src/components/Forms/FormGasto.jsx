@@ -37,11 +37,10 @@ export default function FormGasto() {
 
   return (
     <>
-      {createGastoStatus ? 
-        <div>
-          <p>Gasto creado con éxito</p>
-          <button onClick={handleCreateGastoStatus}>Crear otro gasto</button>
-        </div> :
+    <button onClick={handleCreateGastoStatus}>{createGastoStatus? 'Crear gasto nuevo' : "Volver"}</button>
+      {!createGastoStatus && 
+      <>
+      <h3 className="Form-createGasto-title">Nuevo gasto</h3>
       <form onSubmit={createNewGasto} className="Form-createGasto">
         <div>
           <label htmlFor="titulo">Título</label>
@@ -60,7 +59,7 @@ export default function FormGasto() {
 
         <div>
           <label htmlFor="categoria">Categoria</label>
-          <select name="categoria" id="categoria">
+          <select name="categoria" id="categoria" className="seDivide-select_CreateGasto">
             {
             categoriasDisponibles.map(categoria => {
               return(
@@ -72,17 +71,18 @@ export default function FormGasto() {
         </div>
 
         {users.length > 1 && <div>
-          <label>Se divide entre:</label>
-          <div>
+          <span>Se divide entre:</span>
+          <div className="seDivide-container_CreateGasto">
             {users.map((usuario) => (
-              usuario._id != user.id && <label key={usuario._id} style={{ display: 'block' }}>
+              usuario._id != user.id && <label key={usuario._id}  className={selectedOptions.includes(usuario._id) ? 'label-activo seDivide_CreateGasto' : 'seDivide_CreateGasto'}>
                 <input
                   type="checkbox"
                   value={usuario._id}
                   checked={selectedOptions.includes(usuario._id)}
                   onChange={() => toggleUser(usuario._id)}
+                  className="seDivide_CreateGasto-input"
                 />
-                {usuario.nombre}
+                <span>{usuario.nombre}</span>
               </label>
             ))}
           </div>
@@ -90,7 +90,8 @@ export default function FormGasto() {
         }
 
         <button type="submit">Confirmar</button>
-      </form> }
+      </form></>
+       }
     </>
   );
 }

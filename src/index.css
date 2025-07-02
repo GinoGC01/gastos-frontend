@@ -1,5 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+
 :root {
-  font-family: 'Roboto', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  
+/* font-family: 'Inter', sans-serif; */
+  font-family: "IBM Plex Sans", sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -36,6 +40,9 @@
   /* Textos y fondo */
   --text-color: #1D1D1D;
   --background-color: #FFFFFF;
+
+  --color-pagado: #4CAF50;     /* Verde suave, tipo "éxito" */
+  --color-pendiente: #f5c430;  /* Amarillo vibrante, tipo "advertencia" */
 }
 
 *{
@@ -87,7 +94,8 @@ button:focus-visible {
   position: relative;
   z-index: 1000;
   margin: auto;
-  min-width: 425px;
+  width: 100%;
+  padding: 0 10px;
 }
 
 .Profile-section {
@@ -98,6 +106,8 @@ button:focus-visible {
   min-height: 100vh;
   background-color: var(--blue-dark);
   background-color: #04041d;
+  background-color: #010114;
+
   overflow: hidden;
   position: relative;
 }
@@ -139,10 +149,6 @@ button:focus-visible {
   color: white;
 }
 
-.Gastos-incluye_Profile{
-  width: 95%;
-  margin: auto;
-}
 
 /* CARD SIMPLE */
 
@@ -199,7 +205,7 @@ button:focus-visible {
   z-index: 1000;
 }
 
-.Card-extended_cardSimple header{
+.Card-extended_cardSimple header, .Card-short_cardSimple header{
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -302,7 +308,8 @@ button:focus-visible {
 
 .buttons_cardSimple{
   display: flex;
-  gap:.5em
+  gap:.5em;
+  margin-top: 20px;
 }
 
 
@@ -313,30 +320,107 @@ button:focus-visible {
 }
 
 /* END CARD SIMPLE */
+/* SHORT CARD */
+
+.Card-short_cardSimple{
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  padding: 10px ;
+  margin: auto;
+  margin-bottom: 30px;
+}
+
+.Card-short_cardSimple-bg-green{
+  background-color: var(--color-pagado);
+  background: linear-gradient(90deg,rgba(76, 175, 80, 1) 0%, rgb(118, 219, 121) 100%);
+  background: linear-gradient(90deg,rgb(76, 175, 175) 0%, rgb(170, 235, 231) 100%);
+
+}
+.Card-short_cardSimple-bg-yellow{
+  background-color: var(--color-pendiente);
+  background: linear-gradient(90deg,rgba(245, 196, 48, 1) 0%, rgba(255, 222, 125, 1) 100%);
+  background: linear-gradient(90deg,rgb(158, 90, 247) 0%, rgb(175, 177, 255) 100%);
+
+}
+
+.Card-short-data_cardSimple{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 5em;
+}
+
+.Card-short-data_cardSimple h3{
+  font-size: 1.6em;
+  font-weight: 800;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 0 0 55%;
+}
+
+.gasto-Card-short-data_cardSimple{
+  flex: 0 0 35%;
+  text-align: end;
+  font-style: italic;
+
+}
+
+.gasto-Card-short-data_cardSimple h4{
+  font-size: 1.5em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gasto-Card-short-data_cardSimple p{
+  color: rgba(0, 0, 0, .5);
+}
+
+.Card-short_cardSimple footer{
+  color: rgba(0, 0, 0, .5);
+  font-style: italic;
+  
+}
+
+
 
 /* FORM GASTO */
+
+.Form-createGasto-title{
+  font-size: 1.5em;
+  color: var(--gray-light);
+  width: 90%;
+  margin:  15px auto;
+
+}
 
 .Form-createGasto{
   gap: .5em;
   color: var(--gray-light);
   background-color: rgba(0, 0, 0, .15);
+  background-color: var(--gray-dark);
+  background-color: #0f0f2285;
   width: 90%;
-  margin: 20px auto;
+  margin: 0px auto 20px;
   box-shadow: none;
 }
 
 .Form-createGasto > div{
   display: flex;
   flex-direction: column;
-  gap: .5em;
+  gap: .2em;
 }
 
-.Form-createGasto input {
+.Form-createGasto input, .Form-createGasto textarea {
   padding: 10px;
   border-radius: 7px;
+  
 }
 
-.Form-createGasto input:focus {
+.Form-createGasto input:focus,.Form-createGasto textarea:focus  {
   outline: none;
   border: none;
   background-color: var(--gray-medium);
@@ -348,8 +432,65 @@ button:focus-visible {
   height: 100px;         
   max-height: 100px; 
   width:100% ;
-  border-radius: 7px;
 
+}
+
+/* select */
+
+.seDivide-select_CreateGasto {
+  appearance: none; 
+  background-color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 40px 10px 15px;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  color: #333;
+  cursor: pointer;
+  position: relative;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='14' height='10' viewBox='0 0 14 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23000' d='M1 1l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 14px 10px;
+  transition: border-color 0.3s ease;
+}
+
+.select-estilizado:focus {
+  outline: none;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.2);
+}
+
+.seDivide-container_CreateGasto{
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5em;
+  margin-bottom: 20px;
+}
+
+.seDivide_CreateGasto-input{
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  position: absolute;
+}
+
+.seDivide_CreateGasto{
+  display: flex;
+  padding: 5px 10px;
+  border-radius: 7px;
+  border: 1px solid var(--gray-light);
+  cursor: pointer;
+
+}
+
+.label-activo {
+  background-color: var(--bg-boton-azul);
+}
+
+.seDivide_CreateGasto span{
+  width: 100%;
+  text-align: center;
 }
 
 

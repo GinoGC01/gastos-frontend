@@ -117,9 +117,8 @@ export function GastosCardsSimple({ gasto }) {
       </div>}
     </>
   ) : (
-    <li className="Container_cardSimple">
+    <div className="Container_cardSimple">
       <div className="Card-extended_cardSimple">
-
       <header>
         <div className="categoria_cardSimple">
           {
@@ -144,7 +143,7 @@ export function GastosCardsSimple({ gasto }) {
 
       <div className="gastoDetails_cardSimple ">
         <h4 className="bg-component-childs detail_gasto">Total: {gasto.monto}</h4>
-        {gasto.seDivide.length > 1 && <h5 className="bg-component-childs detail_gasto">{handlerGasto} C/U</h5>}
+        {gasto.seDivide.length > 1 && <h5 className="bg-component-childs detail_gasto">{handlerGasto.toFixed(2)} C/U</h5>}
       </div>
 
       
@@ -170,7 +169,7 @@ export function GastosCardsSimple({ gasto }) {
         <button onClick={handlerPagado}><Pagado/></button>
       </div>}
     </div>
-    </li>
+    </div>
     
   );
 }

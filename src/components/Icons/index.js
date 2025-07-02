@@ -8,7 +8,7 @@ export { Hogar } from "./Hogar.jsx";
 export { Servicios } from "./Servicios.jsx";
 export { Impuestos } from "./Impuestos.jsx";
 export { Ropa } from "./Ropa.jsx";
-export { Mascota } from "./Mascota.jsx";
+export { Mascotas } from "./Mascotas.jsx";
 export { Tecnologia } from "./Tecnologia.jsx";
 export { Viajes } from "./Viajes.jsx";
 export { Ahorro } from "./Ahorro.jsx";

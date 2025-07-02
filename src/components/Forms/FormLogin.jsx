@@ -32,7 +32,7 @@ export default function FormLogin() {
             <label htmlFor="name">Password</label>
             <input type="password" name='pass' id='pass' />
         </div>
-        <button>Entrar</button>
+        <button type="submit">Entrar</button>
         {user && !user.status && <span>{user.message}</span>}
         <div>
             <Link to="/register">Aun no tengo cuenta</Link>
