@@ -31,7 +31,14 @@ export default function FormGasto() {
     };
 
     try {
-      await createGasto(gastoFinal);
+      const response = await createGasto(gastoFinal);
+      if(!response) {
+        showToast({
+          text: 'Error al crear el gasto',
+          background: '#f44336',
+        });
+        return;
+      }
        showToast({
             text: '¡Gasto creado!',
             background: '#4CAF50',

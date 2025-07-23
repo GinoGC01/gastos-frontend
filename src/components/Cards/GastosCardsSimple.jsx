@@ -39,7 +39,9 @@ export function GastosCardsSimple({ gasto }) {
 
   return updateGastoOpen ? (
     <div className="Card-extended_cardSimple">
-      <form onSubmit={handleSubmitUpdateGasto} className="Form-createGasto">
+      <h4>Actualizar Gastos</h4>
+
+      <form onSubmit={handleSubmitUpdateGasto} className="Form-createGasto updateGasto_Form">
         <div>
           <label htmlFor="titulo">Título</label>
           <input

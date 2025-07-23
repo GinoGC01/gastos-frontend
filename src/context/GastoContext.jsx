@@ -5,6 +5,7 @@ import { useAuth } from "../hooks/useAuth.jsx";
 const GastosContext = createContext();
 
 export const GastosProvider = ({ children }) => {
+  const [on, setOn] = useState(false);
   const [gastos, setGasto] = useState(null);
   const [createGastoStatus, setCreateGastoStatus] = useState(false)
   const [gastoDeleted, setGastoDeleted] = useState(null)
@@ -50,6 +51,7 @@ export const GastosProvider = ({ children }) => {
     }
   };
 
+  //boolean
   const createGasto = async (gasto) => {
     if(!gasto) return {message: "need a gasto data"}
     try {
@@ -70,15 +72,14 @@ export const GastosProvider = ({ children }) => {
            
         }
         await getGastos()
-        return data
+        return true
     } catch (error) {
         console.error(error)
     }
   }
 
+  //devuelve booleano
   const deleteGasto = async (gastoId) => {
-  const confirmDelete = window.confirm("¿Estás seguro que querés eliminar este gasto?")
-  if (!confirmDelete) return
   try {
     const response = await fetch(`${URL_BACK}gastos/${gastoId}`, {
       method: "DELETE",
@@ -100,7 +101,7 @@ export const GastosProvider = ({ children }) => {
   }
   }
 
-    //devuelve booleano
+  //devuelve booleano
   const updateGasto = async (newGasto, gastoId) => {
     if(!newGasto) return {message: "need a newGasto data"}
     
@@ -120,9 +121,12 @@ export const GastosProvider = ({ children }) => {
         return true
       }
       console.error("Error al actualizar gasto:", data);
-      return false
+      return true
     } catch (error) {
       console.error("Error al actualizar gasto:", error);
+      if(error.message === "Inicie Sesion para continuar"){
+        setOn(false)
+      }
     }
   }
 
@@ -151,7 +155,7 @@ export const GastosProvider = ({ children }) => {
     setCreateGastoStatus(!createGastoStatus)
   }
 
- const handleGastosFiltered = ({ titulo = '', categoria = '' }) => {
+  const handleGastosFiltered = ({ titulo = '', categoria = '' }) => {
   const gastosFiltrados = gastos.filter(gasto => {
     const tituloMatch = !titulo || gasto.titulo.toLowerCase().includes(titulo.toLowerCase());
     const categoriaMatch = !categoria || gasto.categoria.toLowerCase().includes(categoria.toLowerCase());
@@ -161,13 +165,18 @@ export const GastosProvider = ({ children }) => {
   // console.log(gastosFiltrados, titulo, categoria)
 
   setGastosFiltrados(gastosFiltrados);
-};
+  };
 
   useEffect(() => {
     if(isAuthenticated){
       getGastos();
     }
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    if(user){
+      setOn(true)
+    }}, [user])
 
   return (
     <GastosContext.Provider value={{ 
@@ -183,7 +192,8 @@ export const GastosProvider = ({ children }) => {
       pagado,
       categoriasDisponibles,
       gastosFiltered,
-      handleGastosFiltered}}>
+      handleGastosFiltered,
+      on}}>
       {children}
     </GastosContext.Provider>
   );

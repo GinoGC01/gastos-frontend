@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useAuth } from './useAuth.jsx'
 import { useGasto } from './useGasto.jsx'
 import useHref from './useHref.jsx'
+import { showToast } from '../utils/toasts/toast.js'
+import Swal from 'sweetalert2'
 
 export default function useHandlerGastos({gasto}) {
     const { user } = useAuth()
@@ -49,41 +51,120 @@ export default function useHandlerGastos({gasto}) {
         }))
       } //cambia el estado del formulario
     
-      const handleSubmitUpdateGasto = async (e) => {
-        e.preventDefault()
-    
-        const newGasto = {
-          ...formData,
-          monto: Number(formData.monto),
-          seDivide: selectedOptions.map(id => ({ userId: id })),
-        }
+  const handleSubmitUpdateGasto = async (e) => {
+      e.preventDefault();
 
-    
-          await updateGasto(newGasto, gasto._id)
-          setUpdateGastoOpne(false);
-        
-      }
-    
-      const handleDeleteGasto = async () => {
-        const confirmDelete = window.confirm("¿Estás seguro que querés eliminar este gasto?"); //actualizar a popups mas modernas
-        if (!confirmDelete) return;
-        const gastoEliminadoBoolean = await deleteGasto(gasto._id)
-        if(gastoEliminadoBoolean){
-          alert('gasto eliminado correctamente') //revisar con alerts mejores
-          handleClick(`/profile`) // si se elimina el gasto navega automaticamente al perfil
-        }
+      const confirm = await Swal.fire({
+        title: "¿Actualizar gasto?",
+        text: "Se guardarán los cambios realizados.",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#690cc0ff",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, actualizar",
+        cancelButtonText: "Cancelar"
+      });
 
+      if (!confirm.isConfirmed) return;
+
+      const newGasto = {
+        ...formData,
+        monto: Number(formData.monto),
+        seDivide: selectedOptions.map(id => ({ userId: id })),
+      };
+
+      const actualizado = await updateGasto(newGasto, gasto._id);
+
+      if (actualizado) {
+        await Swal.fire({
+          title: "Actualizado",
+          text: "El gasto se actualizó correctamente.",
+          icon: "success",
+          confirmButtonColor: "#690cc0ff"
+        });
+        setUpdateGastoOpne(false);
+      } else {
+        await Swal.fire({
+          title: "Error",
+          text: "No se pudo actualizar el gasto.",
+          icon: "error",
+          confirmButtonColor: "#690cc0ff"
+        });
       }
+    };
     
-      const handlerPagado = async () =>{
-        const confirmDelete = window.confirm("¿El gasto fue pagado correctamente?"); //actualizar a popups mas modernas
-        if (!confirmDelete) return;
-        await updatePagado(gasto._id)
-      }
+     const handleDeleteGasto = async () => {
+        const result = await Swal.fire({
+          title: "¿Estás seguro?",
+          text: "Este gasto se eliminará permanentemente.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#690cc0ff",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Sí, eliminar",
+          cancelButtonText: "Cancelar",
+        });
+
+        if (!result.isConfirmed) return;
+
+        const eliminado = await deleteGasto(gasto._id);
+
+        if (eliminado) {
+          await Swal.fire({
+            title: "Eliminado",
+            text: "El gasto fue eliminado correctamente.",
+            icon: "success",
+            confirmButtonColor: "#690cc0ff"
+          });
+
+          handleClick("/home");
+        } else {
+          await Swal.fire({
+            title: "Error",
+            text: "No se pudo eliminar el gasto. Intentalo más tarde.",
+            icon: "error",
+            confirmButtonColor: "#690cc0ff"
+          });
+        }
+      };
+    
+    const handlerPagado = async () => {
+        const result = await Swal.fire({
+          title: "¿Marcar como pagado?",
+          text: "¿El gasto fue pagado correctamente?",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#690cc0ff",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Sí, marcar",
+          cancelButtonText: "Cancelar"
+        });
+
+        if (!result.isConfirmed) return;
+
+        const actualizado = await updatePagado(gasto._id);
+
+        if (actualizado) {
+          await Swal.fire({
+            title: "Actualizado",
+            text: "El gasto fue marcado como pagado.",
+            icon: "success",
+            confirmButtonColor: "#690cc0ff"
+          });
+        } else {
+          await Swal.fire({
+            title: "Error",
+            text: "No se pudo actualizar el estado del gasto.",
+            icon: "error",
+            confirmButtonColor: "#690cc0ff"
+          });
+        }
+      };
 
       const handleropenHistorialAct = ()=>{
         setOpenHistorialAct(!openHistorialAct)
       }
+
   return (
     {
         updateGastoOpen,

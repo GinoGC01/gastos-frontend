@@ -54,7 +54,7 @@ export function Home() {
                 </form>}
         
                 {gastos.length > 0 ? (
-                    <div className='Gastos-incluye_Profile'>
+                    <div className={gastos.length <= 4 ? 'Gastos-incluye_Profile Gastos-incluye-pagination' : 'Gastos-incluye_Profile'}>
                         <h2>
                             Gastos que te incluyen ({gastos.length})
                         </h2>
