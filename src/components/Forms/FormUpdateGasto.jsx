@@ -1,7 +1,7 @@
 import { useAuth } from "../../hooks/useAuth"
 import { useState } from "react";
 
-export default function FormUpdateGasto({data, open, handlerUpdate}) {
+export default function FormUpdateGasto({ open, handlerUpdate}) {
     const {users, user} = useAuth()
       const [selectedOptions, setSelectedOptions] = useState([user.user.id]);
     

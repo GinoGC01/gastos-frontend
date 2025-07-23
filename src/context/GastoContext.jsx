@@ -1,12 +1,12 @@
 import { createContext, useEffect, useState } from "react";
-import { URL_BACK } from "../config";
-import { useAuth } from "../hooks/useAuth";
+import { URL_BACK } from "../config.js";
+import { useAuth } from "../hooks/useAuth.jsx";
 
 const GastosContext = createContext();
 
 export const GastosProvider = ({ children }) => {
-  const [gasto, setGasto] = useState(null);
-  const [createGastoStatus, setCreateGastoStatus] = useState(null)
+  const [gastos, setGasto] = useState(null);
+  const [createGastoStatus, setCreateGastoStatus] = useState(false)
   const [gastoDeleted, setGastoDeleted] = useState(null)
   const [pagado, setPagado] = useState(false)
   const [categoriasDisponibles] = useState([
@@ -33,6 +33,7 @@ export const GastosProvider = ({ children }) => {
   { label: "Otros", value: "otros" }
   ])
   const {user, isAuthenticated} = useAuth()
+  const [gastosFiltered, setGastosFiltrados] = useState([])
 
   const getGastos = async () => {
     try {
@@ -41,9 +42,10 @@ export const GastosProvider = ({ children }) => {
       });
       const data = await response.json();
       if (data && data.status) {
-        setGasto(data);
+        setGasto(data.gastos.reverse());
       }
     } catch (error) {
+      console.log('data error context')
       console.error(error);
     }
   };
@@ -64,7 +66,8 @@ export const GastosProvider = ({ children }) => {
         })
         const data = await response.json()
         if(data && data.status){
-            setCreateGastoStatus(true)
+            setCreateGastoStatus(false)
+           
         }
         await getGastos()
         return data
@@ -87,12 +90,11 @@ export const GastosProvider = ({ children }) => {
     if (!response.ok || !data.status) {
       console.error("Error al eliminar gasto:", data.message || "Respuesta no válida")
       setGastoDeleted(data)
-      return;
+      return false
     }
-
     setGastoDeleted(data) 
     await getGastos()    // Refrescar la lista actualizada
-
+    return true //para la navegacion
   } catch (error) {
     console.error("Error al eliminar gasto:", error)
   }
@@ -101,7 +103,6 @@ export const GastosProvider = ({ children }) => {
     //devuelve booleano
   const updateGasto = async (newGasto, gastoId) => {
     if(!newGasto) return {message: "need a newGasto data"}
-
     
     try {
       const response = await fetch(`${URL_BACK}gastos/${gastoId}`, {
@@ -139,8 +140,8 @@ export const GastosProvider = ({ children }) => {
       if(data && data.status){
         await getGastos()
         setPagado(true)
+        console.log('pagado')
       }
-      return false
     } catch (error) {
       console.error("Error al actualizar gasto:", error);
     }
@@ -150,6 +151,18 @@ export const GastosProvider = ({ children }) => {
     setCreateGastoStatus(!createGastoStatus)
   }
 
+ const handleGastosFiltered = ({ titulo = '', categoria = '' }) => {
+  const gastosFiltrados = gastos.filter(gasto => {
+    const tituloMatch = !titulo || gasto.titulo.toLowerCase().includes(titulo.toLowerCase());
+    const categoriaMatch = !categoria || gasto.categoria.toLowerCase().includes(categoria.toLowerCase());
+    return tituloMatch || categoriaMatch;
+  });
+
+  // console.log(gastosFiltrados, titulo, categoria)
+
+  setGastosFiltrados(gastosFiltrados);
+};
+
   useEffect(() => {
     if(isAuthenticated){
       getGastos();
@@ -158,7 +171,7 @@ export const GastosProvider = ({ children }) => {
 
   return (
     <GastosContext.Provider value={{ 
-      gasto, 
+      gastos, 
       getGastos, 
       createGastoStatus, 
       createGasto, 
@@ -168,7 +181,9 @@ export const GastosProvider = ({ children }) => {
       updateGasto,
       updatePagado,
       pagado,
-      categoriasDisponibles}}>
+      categoriasDisponibles,
+      gastosFiltered,
+      handleGastosFiltered}}>
       {children}
     </GastosContext.Provider>
   );

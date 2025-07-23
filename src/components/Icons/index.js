@@ -15,7 +15,7 @@ export { Ahorro } from "./Ahorro.jsx";
 export { Inversion } from "./Inversion.jsx";
 export { Deudas } from "./Deudas.jsx";
 export { CuidadoPersonal } from "./CuidadoPersonal.jsx";
-export { Regalo } from "./Regalo.jsx";
+export { Regalos } from "./Regalos.jsx";
 export { Telefono } from "./Telefono.jsx";
 export { Internet } from "./Internet.jsx";
 export { Otros } from "./Otros.jsx";

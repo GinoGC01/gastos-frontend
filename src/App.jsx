@@ -6,9 +6,13 @@ import LoginPage from './pages/LoginPage.jsx'
 import Profile from './pages/Profile.jsx'
 import Protected from './api/Protected.jsx'
 import RegisterPage from './pages/RegisterPage.jsx'
+import { Gasto } from './pages/Gasto.jsx'
+import { Home } from './pages/Home.jsx'
 
 function App() {
-
+if (!document.startViewTransition) {
+  console.warn("Tu navegador no soporta View Transitions");
+}
   return (
     <AuthProvider>
       <GastosProvider>
@@ -22,8 +26,9 @@ function App() {
             <Route path='/register' element={<RegisterPage/>}/>
             <Route element={<Protected/>}>
               <Route path='/nuevo-gasto' element={<h1>Nuevo gasto</h1>}/>
-              <Route path='/modificar-gasto/:id' element={<h1>Modificar gasto</h1>}/>
+              <Route path='/gasto/:id' element={<Gasto/>}/>
               <Route path='/profile' element={<Profile/>}/>
+              <Route path='/home' element={<Home/>}/>
             </Route>
           </Routes>
         </BrowserRouter>

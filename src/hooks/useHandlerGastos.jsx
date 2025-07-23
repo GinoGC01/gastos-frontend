@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useAuth } from './useAuth.jsx'
 import { useGasto } from './useGasto.jsx'
+import useHref from './useHref.jsx'
 
 export default function useHandlerGastos({gasto}) {
     const { user } = useAuth()
@@ -8,6 +9,7 @@ export default function useHandlerGastos({gasto}) {
     
       const [updateGastoOpen, setUpdateGastoOpne] = useState(false)
       const [selectedOptions, setSelectedOptions] = useState([user.id])
+      const [openHistorialAct, setOpenHistorialAct] = useState(false)
 
       const creadoPor = gasto.creadoPor.toString() === user.id.toString();
       const handlerNombre = creadoPor ? "Creado por ti" : `Creado por ${gasto.seDivide[0]?.userId?.nombre || 'otro usuario'}`;
@@ -17,6 +19,7 @@ export default function useHandlerGastos({gasto}) {
         timeStyle: "short",
       })
 
+      const {handleClick} = useHref()
       //estado que abre el formulario
       const handlerUpdate = () => {
         setUpdateGastoOpne((prev) => !prev)
@@ -64,13 +67,22 @@ export default function useHandlerGastos({gasto}) {
       const handleDeleteGasto = async () => {
         const confirmDelete = window.confirm("¿Estás seguro que querés eliminar este gasto?"); //actualizar a popups mas modernas
         if (!confirmDelete) return;
-        await deleteGasto(gasto._id)
+        const gastoEliminadoBoolean = await deleteGasto(gasto._id)
+        if(gastoEliminadoBoolean){
+          alert('gasto eliminado correctamente') //revisar con alerts mejores
+          handleClick(`/profile`) // si se elimina el gasto navega automaticamente al perfil
+        }
+
       }
     
       const handlerPagado = async () =>{
         const confirmDelete = window.confirm("¿El gasto fue pagado correctamente?"); //actualizar a popups mas modernas
         if (!confirmDelete) return;
         await updatePagado(gasto._id)
+      }
+
+      const handleropenHistorialAct = ()=>{
+        setOpenHistorialAct(!openHistorialAct)
       }
   return (
     {
@@ -86,7 +98,9 @@ export default function useHandlerGastos({gasto}) {
         handlerPagado, 
         creadoPor,
         formData,
-        selectedOptions
+        selectedOptions,
+        handleropenHistorialAct,
+        openHistorialAct
     }
   )
 }

@@ -8,7 +8,7 @@ export default function FormLogin() {
     const navigate = useNavigate()
 
     useEffect(()=>{
-        if(isAuthenticated) navigate('/profile')
+        if(isAuthenticated) navigate('/home')
     },[isAuthenticated, navigate])
 
     const userAuth = async (e)=>{
@@ -17,7 +17,7 @@ export default function FormLogin() {
         const formData = new FormData(form);
         const fields = Object.fromEntries(formData)
         try{
-            login(fields)
+            await login(fields)
         }catch(error){
             console.error(error)
         }   
