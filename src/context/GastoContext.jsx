@@ -5,11 +5,10 @@ import { useAuth } from "../hooks/useAuth.jsx";
 const GastosContext = createContext();
 
 export const GastosProvider = ({ children }) => {
-  const [on, setOn] = useState(false);
+  const [onSession, setOnSession] = useState(false);
   const [gastos, setGasto] = useState(null);
   const [createGastoStatus, setCreateGastoStatus] = useState(false)
   const [gastoDeleted, setGastoDeleted] = useState(null)
-  const [pagado, setPagado] = useState(false)
   const [categoriasDisponibles] = useState([
   { label: "Alimentos", value: "alimentos" },
   { label: "Transporte", value: "transporte" },
@@ -125,7 +124,7 @@ export const GastosProvider = ({ children }) => {
     } catch (error) {
       console.error("Error al actualizar gasto:", error);
       if(error.message === "Inicie Sesion para continuar"){
-        setOn(false)
+        setOnSession(false)
       }
     }
   }
@@ -143,9 +142,10 @@ export const GastosProvider = ({ children }) => {
       const data = await response.json()
       if(data && data.status){
         await getGastos()
-        setPagado(true)
-        console.log('pagado')
+        console.log('data pagado', data)
+        return true
       }
+      return false
     } catch (error) {
       console.error("Error al actualizar gasto:", error);
     }
@@ -175,7 +175,7 @@ export const GastosProvider = ({ children }) => {
 
   useEffect(() => {
     if(user){
-      setOn(true)
+      setOnSession(true)
     }}, [user])
 
   return (
@@ -189,11 +189,10 @@ export const GastosProvider = ({ children }) => {
       gastoDeleted, 
       updateGasto,
       updatePagado,
-      pagado,
       categoriasDisponibles,
       gastosFiltered,
       handleGastosFiltered,
-      on}}>
+      onSession}}>
       {children}
     </GastosContext.Provider>
   );
