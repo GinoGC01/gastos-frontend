@@ -1,10 +1,9 @@
 import { useAuth } from "../../hooks/useAuth.jsx";
 import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
-import { Link } from "react-router-dom";
 
 export default function FormLogin() {
-    const {login, user, isAuthenticated} = useAuth()
+    const {login, user, isAuthenticated, authMessage} = useAuth()
     const navigate = useNavigate()
 
     useEffect(()=>{
@@ -22,24 +21,21 @@ export default function FormLogin() {
             console.error(error)
         }   
     }
+
+
+
   return (
-    <form onSubmit={userAuth}>
-        <div>
-            <label htmlFor="email">Email usuario</label>
-            <input type="email" name='email' id='email' />
+    <form onSubmit={userAuth} className="FormLogin animate__animated animate__headShake">
+        <div className="FormLogin-input">
+            <label htmlFor="email">Email</label>
+            <input type="email" name='email' id='email' placeholder="brucewane@batman.com"/>
         </div>
-        <div>
+        <div className="FormLogin-input">
             <label htmlFor="name">Password</label>
-            <input type="password" name='pass' id='pass' />
+            <input type="password" name='pass' id='pass' placeholder="password segura"/>
         </div>
         <button type="submit">Entrar</button>
-        {user && !user.status && <span>{user.message}</span>}
-        <div>
-            <Link to="/register">Aun no tengo cuenta</Link>
-            <Link to="/">Recuperar passwoord</Link>
-
-        </div>
-
+        {authMessage != 'Sesion Iniciada con exito' && <span className="message-error_FormLogin">{authMessage}</span>}
     </form>
   )
 }

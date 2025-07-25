@@ -1,66 +1,86 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 
-export function usePaginationFilters({gastos}) {
-    const [gastosFiltered, setGastosFiltered] = useState([])
+export function usePaginationFilters({ gastos }) {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [estado, setEstado] = useState('');
+  const [gastosFiltered, setGastosFiltered] = useState([]);
+  const [gastosPagination, setGastosPagination] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const ITEMS_PER_PAGE = 4;
 
-    const [gastosPagination, setGastosPagination] = useState([])
-    const [currentPage, setCurrentPage] = useState(0)
-    const [valor, setValor] = useState('')
-    const ITEMS_PER_PAGE = 4
+  const isFiltering = searchTerm !== '' || estado !== '';
 
-    const handleGastosFiltered = ({ titulo = '', categoria = '' }) => {
-        const gastosFiltrados = gastos.filter(gasto => {
-            const tituloMatch = !titulo || gasto.titulo.toLowerCase().includes(titulo.toLowerCase());
-            const categoriaMatch = !categoria || gasto.categoria.toLowerCase().includes(categoria.toLowerCase());
-            return tituloMatch || categoriaMatch;
-        });
-        setGastosFiltered(gastosFiltrados);
+  const handleGastosFiltered = ({ searchTerm = '', estado = '' }) => {
+    if (!Array.isArray(gastos)) {
+      setGastosFiltered([]);
+      return;
     }
 
-    // Cuando cambia el valor del input, se filtran los gastos
-    const handleChange = (e) => {
-        const nuevoValor = e.target.value
-        setValor(nuevoValor)
+    const search = searchTerm.toLowerCase();
 
-        handleGastosFiltered({
-            titulo: nuevoValor,
-            categoria: nuevoValor,
-            pagado: nuevoValor
-        })
+    const gastosFiltrados = gastos.filter(gasto => {
+      const tituloMatch = gasto.titulo.toLowerCase().includes(search);
+      const categoriaMatch = gasto.categoria.toLowerCase().includes(search);
+      const estadoMatch = gasto.estado.toLowerCase() === estado.toLowerCase();
+
+      const coincideTexto = search ? (tituloMatch || categoriaMatch) : true;
+      const coincideEstado = estado ? estadoMatch : true;
+
+      return coincideTexto && coincideEstado;
+    });
+
+    setGastosFiltered(gastosFiltrados);
+  };
+
+  useEffect(() => {
+    handleGastosFiltered({ searchTerm, estado });
+    setCurrentPage(0);
+  }, [searchTerm, estado, gastos]);
+
+  useEffect(() => {
+    const data = isFiltering
+      ? gastosFiltered
+      : Array.isArray(gastos) ? gastos : [];
+
+    const start = currentPage * ITEMS_PER_PAGE;
+    const end = start + ITEMS_PER_PAGE;
+    setGastosPagination(data.slice(start, end));
+  }, [gastos, gastosFiltered, currentPage, isFiltering]);
+
+  const handlePagination = (action) => {
+    const data = isFiltering
+      ? gastosFiltered
+      : Array.isArray(gastos) ? gastos : [];
+
+    if (action === 'next' && (currentPage + 1) * ITEMS_PER_PAGE < data.length) {
+      setCurrentPage(prev => prev + 1);
+    } else if (action === 'previous' && currentPage > 0) {
+      setCurrentPage(prev => prev - 1);
     }
+  };
 
-        // Se reinicia la paginación cada vez que se modifica el filtro
-        useEffect(() => {
-            setCurrentPage(0)
-        }, [valor])
-    
-        // Paginación basada en gastos filtrados (si hay) o todos los gastos
-        useEffect(() => {
-            const data = gastosFiltered.length > 0 ? gastosFiltered : gastos
-            if (data && data.length > 0) {
-                const start = currentPage * ITEMS_PER_PAGE
-                const end = start + ITEMS_PER_PAGE
-                setGastosPagination(data.slice(start, end))
-            }
-        }, [gastos, gastosFiltered, currentPage])
-    
-        const handlePagination = (action) => {
-            const data = gastosFiltered.length > 0 ? gastosFiltered : gastos
-            if (action === 'next' && (currentPage + 1) * ITEMS_PER_PAGE < data.length) {
-                setCurrentPage(prev => prev + 1)
-            } else if (action === 'previous' && currentPage > 0) {
-                setCurrentPage(prev => prev - 1)
-            }
-        }
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
-  return (
-    {
-        handleChange,
-        handlePagination,
-        gastosPagination,
-        gastosFiltered,
-        valor,
-        currentPage
-    }
-  )
+  const handleEstadoChange = (e) => {
+    setEstado(e.target.value);
+  };
+
+  const resetFilters = () => {
+    setSearchTerm('');
+    setEstado('');
+  };
+
+  return {
+    handleSearchChange,
+    handleEstadoChange,
+    handlePagination,
+    resetFilters,
+    gastosPagination,
+    currentPage,
+    searchTerm,
+    estado,
+    gastosFiltered
+  };
 }

@@ -1,1 +1,1 @@
-export const URL_BACK = 'http://localhost:3000/api/'
+export const URL_BACK = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000/api/';

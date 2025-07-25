@@ -113,9 +113,146 @@ h1 {
 }
 
 
+/* LOGIN */
+
+.Login-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  background-color: var(--background-dark);
+}
+
+.Login-section header{
+  flex: 0 0 30%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Login-section header img{
+  display: block;
+  width: 80%; 
+}
+
+.Login-container{
+  flex: 0 0 70%;
+  width: 100%;
+  border: 1px solid var(--background-light);
+  border-radius: 90px 0 0 0 ;
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  padding: 60px 20px 20px;
+}
+
+.Login-container h1{
+  color: var(--background-light);
+}
+
+.FormLogin {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6em;
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.FormLogin-input {
+  position: relative;
+}
+
+.FormLogin-input input{
+  padding: 10px;
+  padding-top: 15px;
+  border-radius: 7px;
+  outline: none;
+  border: 1px solid #24045567;
+  width: 100%;
+}
+
+.FormLogin-input input:focus {
+  outline: none;
+  border: 1px solid var(--color-icons);
+}
+
+.FormLogin-input label {
+  font-size: 1em;
+  font-weight: 500;
+  color: var(--background-light);
+  position: absolute;
+  top: -13px;
+  left: 10px;
+  background-color: var(--background-color);
+  padding: 0 5px;
+  border-radius: 5px;
+}
+
+.FormLogin-input input::placeholder {
+  color: var(--gray-dark);
+}
+
+
+.FormLogin button{
+  padding: 10px;
+  border: none;
+  border-radius: 7px;
+  background-color: var(--background-buttons);
+  color: var(--gray-light);
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color .2s, color .2s, scale .2s;
+}
+
+.FormLogin button:hover {
+  background-color: var(--color-icons);
+  color: var(--gray-light);
+  scale: 1.05;
+}
+
+.FormLogin p{
+  font-size: .7em;
+  color: var(--gray-dark);
+  text-align: center;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.message-error_FormLogin{
+  text-align: center;
+  color: red;
+}
+
+
+.Login-links{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.Login-links a{
+  color: var(--color-icons);
+  font-size: .9em;
+  text-decoration: none;
+  padding: 0 20px;
+}
+
+.Login-links a:hover{
+  opacity: .7;
+  
+}
+
+/* END - LOGIN */
+
 
 /* Perfil */
-
 
 .Profile-section::after {
   content: "";
@@ -266,7 +403,7 @@ h1 {
 
 .titulo_cardSimple{
   display: block;
-  text-align: start;
+  text-align: center;
   font-size: 1.7em;
   color: var(--gray-light);
   opacity: .9;
@@ -701,6 +838,8 @@ h1 {
   /* overflow-y: hidden; */
 }
 
+
+
 .createGastoStatus{
   position: absolute;
   width: 100vw;
@@ -724,7 +863,15 @@ h1 {
   display: flex;
   width: 100%;
   justify-content: space-between;
+  align-items: center;
   padding: 20px 30px;
+}
+
+.logo_Home-section{
+  width: 25px;
+  height: auto; 
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
 }
 
 .header_Home-section > span{
@@ -740,6 +887,20 @@ h1 {
   margin-bottom: 10px;
   font-weight: 500;
 }
+.saludo_Home-section h1{
+  font-size: 2.5em;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.saludo_Home-section button{
+  background-color: transparent;
+  border: none;
+  color: var(--background-color);
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: color .2s, scale .2s;
+} 
 
 .Gastos-container{
   background-color: var(--background-color);
@@ -826,12 +987,26 @@ h1 {
   top: 35px;
   width: 90%;
   display: flex;
-  gap: .2em;
+  gap: 1em;
   left: 50%;
   transform: translateX(-50%);
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
 }
 
-.form-filters-search_Home-section > input{
+.filters-search_Home-section{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 60%;
+  height: 2.5em;
+  background-color: var(--background-color);
+  border-radius: 12px;
+  box-shadow: 0 2px 2px 2px rgba(0, 0, 0, .088);
+}
+
+.filters-search_Home-section > input{
   all: unset;
   padding: 5px 5px 5px 35px;
   border-radius: 12px;
@@ -842,7 +1017,7 @@ h1 {
   width: 100%;
 }
 
-.form-filters-search_Home-section > label{
+.filters-search_Home-section > label{
   font-size: 1.3em;
   height: 2em;
   display: flex;
@@ -852,6 +1027,27 @@ h1 {
   position: absolute;
   left: 7px;
   top: -2px;
+}
+
+.filters-state_Home-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 30%;
+  height: 2.5em;
+  background-color: var(--background-color);
+  border-radius: 12px;
+  box-shadow: 0 2px 2px 2px rgba(0, 0, 0, .088);
+}
+
+.filters-state_Home-section > select {
+  all: unset;
+  padding: 5px 10px;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  transition: border .3s ease-in-out;
+  background-color: var(--color-boton);
 }
 
 .Pagination-Gastos-incluye_Profile{
@@ -901,6 +1097,7 @@ h1 {
 
 .Gastos-message p{
   font-size: 1.1em;
+  text-align: center;
 }
 
 @media (prefers-color-scheme: light) {

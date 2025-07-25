@@ -7,6 +7,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [users, setUsers] = useState(null)
+  const [authMessage, setAuthMessage] = useState(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [registered, setRegistered] = useState(false)
 
@@ -15,7 +16,6 @@ export const AuthProvider = ({ children }) => {
       try {
         const response = await fetch(URL_BACK + 'verifyToken', { credentials: "include" });
         const data = await response.json();
-
         if (data && data.status) {
           setIsAuthenticated(true);
           setUser(data.user);
@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
     checkLoign()
   }, [])
 
-const getUsers = async () => {
+  const getUsers = async () => {
       try {
       const response = await fetch(URL_BACK + "usuarios");
       const data = await response.json();
@@ -78,6 +78,8 @@ const getUsers = async () => {
         setUser(data.user)
         await getUsers()
       }
+      setAuthMessage(data.message)
+
     } catch (error) {
       console.error(error)
     }
@@ -120,7 +122,15 @@ const getUsers = async () => {
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, isAuthenticated, registered, register, logout, users }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      login, 
+      isAuthenticated,
+      registered, 
+      register, 
+      logout, 
+      users,
+      authMessage }}>
       {children}
     </AuthContext.Provider>
   );

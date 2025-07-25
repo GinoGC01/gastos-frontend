@@ -18,7 +18,7 @@ export function Gasto() {
         <section className='Gasto-section'>
                 <header className='volver-header'>
                         <button onClick={()=>{handleClick(`/home`)}} className='close-form_Form-Gasto'><ArrowBack/></button>   
-                        <h3 className="Form-createGasto-title">Detalles del gasto</h3>
+                        <h3 className="Form-createGasto-title">{gastoFinded.estado === 'pagado' ? "Gasto PAGADO" : "Detalles del gasto"}</h3>
                 </header>  
                 <GastosCardsSimple gasto={gastoFinded}/>
         </section>
