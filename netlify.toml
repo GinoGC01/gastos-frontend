@@ -1,0 +1,33 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+# Configuración para SPA con React Router
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers para archivos JavaScript (soluciona el error MIME)
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    "Content-Type" = "application/javascript"
+    "Cache-Control" = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.mjs"
+  [headers.values]
+    "Content-Type" = "application/javascript"
+
+[[headers]]
+  for = "/*.jsx"
+  [headers.values]
+    "Content-Type" = "application/javascript"
+
+# Para archivos estáticos
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    "Cache-Control" = "public, max-age=31536000, immutable"
