@@ -1,1 +1,1 @@
-export const URL_BACK = 'https://api-gastos.ginociancia.fun/';
+export const URL_BACK = 'https://api-gastos.ginociancia.fun/api';
