@@ -8,6 +8,7 @@ import Protected from './api/Protected.jsx'
 import RegisterPage from './pages/RegisterPage.jsx'
 import { Gasto } from './pages/Gasto.jsx'
 import { Home } from './pages/Home.jsx'
+import { Landing } from './pages/Landing.jsx'
 
 function App() {
 if (!document.startViewTransition) {
@@ -21,7 +22,7 @@ if (!document.startViewTransition) {
             v7_relativeSplatPath: true,
           }}>
           <Routes>
-            <Route path='/' element={<h1>Bienvenido</h1>}/>
+            <Route path='/' element={<Landing/>}/>
             <Route path='/login' element={<LoginPage/>}/>
             <Route path='/register' element={<RegisterPage/>}/>
             <Route element={<Protected/>}>
